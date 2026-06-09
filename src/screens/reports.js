@@ -9,6 +9,7 @@ import {
 } from '../utils/date.js';
 import { showToast } from '../components/toast.js';
 import { supabase } from '../db/supabaseClient.js';
+import { createLoader } from '../components/loader.js';
 
 export class ReportsScreen {
   constructor() {
@@ -37,6 +38,10 @@ export class ReportsScreen {
   unmount() {}
 
   async loadData() {
+    if (this.el) {
+      render(this.el, createLoader('Generating Reports...'));
+    }
+
     try {
       const { start, end } = this.getDateRangeForPeriod();
       

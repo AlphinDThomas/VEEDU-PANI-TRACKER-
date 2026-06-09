@@ -15,6 +15,7 @@ import {
   toDateString 
 } from '../utils/date.js';
 import { eventBus } from '../state/eventBus.js';
+import { createLoader } from '../components/loader.js';
 
 export class CalendarScreen {
   constructor() {
@@ -52,6 +53,7 @@ export class CalendarScreen {
   }
 
   async refreshCalendar() {
+    if (this.el) render(this.el, createLoader('Loading Calendar...'));
     try {
       this.datesWithEntries = await dailyRecordService.getDatesWithEntries(this.viewYear, this.viewMonth);
       this.renderLayout();
@@ -190,9 +192,12 @@ export class CalendarScreen {
 
   async renderDetailsForDate(dateStr) {
     if (!this.detailsCardContainer) return;
-    this.detailsCardContainer.innerHTML = '';
+    render(this.detailsCardContainer, createLoader('Loading Details...'));
 
     const record = await dailyRecordService.getByDate(dateStr);
+
+    // Clear loader
+    this.detailsCardContainer.innerHTML = '';
 
     // 1. Details Header
     const formattedDate = formatDateShort(dateStr);

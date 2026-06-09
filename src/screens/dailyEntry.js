@@ -9,6 +9,7 @@ import { showToast } from '../components/toast.js';
 import { showConfirmDialog } from '../components/confirmDialog.js';
 import { formatRupees } from '../utils/currency.js';
 import { formatDateShort, getTodayDateString } from '../utils/date.js';
+import { createLoader } from '../components/loader.js';
 
 export class DailyEntryScreen {
   constructor() {
@@ -53,6 +54,10 @@ export class DailyEntryScreen {
   }
 
   async loadDateData(date) {
+    if (this.el) {
+      render(this.el, createLoader('Loading Entry...'));
+    }
+
     try {
       const record = await dailyRecordService.getByDate(date);
       

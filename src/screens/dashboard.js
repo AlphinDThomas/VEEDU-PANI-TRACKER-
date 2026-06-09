@@ -4,6 +4,7 @@ import { navigateTo } from '../router.js';
 import { formatRupees } from '../utils/currency.js';
 import { formatDateShort, getTodayDateString } from '../utils/date.js';
 import { eventBus } from '../state/eventBus.js';
+import { createLoader } from '../components/loader.js';
 
 export class DashboardScreen {
   constructor() {
@@ -31,6 +32,8 @@ export class DashboardScreen {
 
   async refreshData() {
     if (!this.el) return;
+
+    render(this.el, createLoader('Loading Dashboard...'));
 
     try {
       const stats = await analyticsService.getDashboardStats();
