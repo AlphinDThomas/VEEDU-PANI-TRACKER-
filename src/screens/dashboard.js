@@ -15,7 +15,7 @@ export class DashboardScreen {
   mount(container) {
     this.el = createElement('div', { class: 'space-y-stack-md pb-12' });
     container.appendChild(this.el);
-    
+
     // Subscribe to database changes
     eventBus.on('record:created', this.boundRefresh);
     eventBus.on('record:updated', this.boundRefresh);
@@ -81,7 +81,7 @@ export class DashboardScreen {
         }, [
           createElement('div', { class: 'z-10' }, [
             createElement('p', { class: 'font-label-bold text-xs uppercase tracking-wider opacity-90' }, 'Total Labourers Logged'),
-            createElement('h3', { class: 'font-headline-lg mt-2' }, `${stats.allTime.totalLabourers} Personnel`)
+            createElement('h3', { class: 'font-headline-lg mt-2' }, `${stats.allTime.totalLabourers} Labourers`)
           ]),
           createElement('span', {
             class: 'material-symbols-outlined absolute -bottom-4 -right-4 text-[120px] opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-500'
@@ -116,7 +116,7 @@ export class DashboardScreen {
     const insightsSection = createElement('section', { class: 'grid grid-cols-1 md:grid-cols-2 gap-gutter' }, [
       // Chart Card
       this.createTrendChart(trendData),
-      
+
       // Activities Card
       this.createActivitiesFeed(recentActs)
     ]);

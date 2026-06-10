@@ -53,6 +53,25 @@ export class DailyEntryScreen {
     await this.loadDateData(date);
   }
 
+  openDatePicker(input) {
+    if (!input || this.isOpeningDatePicker) return;
+
+    this.isOpeningDatePicker = true;
+    input.focus({ preventScroll: true });
+
+    try {
+      if (typeof input.showPicker === 'function') {
+        input.showPicker();
+      } else {
+        input.click();
+      }
+    } finally {
+      setTimeout(() => {
+        this.isOpeningDatePicker = false;
+      }, 0);
+    }
+  }
+
   async loadDateData(date) {
     if (this.el) {
       render(this.el, createLoader('Loading Entry...'));
@@ -159,7 +178,8 @@ export class DailyEntryScreen {
     // 1. Date Picker / Header Card
     const dateInput = createElement('input', {
       type: 'date',
-      class: 'absolute inset-0 opacity-0 cursor-pointer',
+      class: 'absolute inset-0 h-full w-full opacity-0 pointer-events-none',
+      'aria-label': 'Select entry date',
       value: this.currentDate,
       onchange: (e) => {
         if (e.target.value) {
@@ -168,24 +188,44 @@ export class DailyEntryScreen {
       }
     });
 
-    const dateCard = createElement('div', {
-      class: 'relative flex items-center justify-between bg-surface-container-low p-3 rounded-xl border border-outline-variant cursor-pointer active:opacity-90 overflow-hidden'
+    const dateTrigger = createElement('div', {
+      class: 'relative flex min-w-0 flex-1 items-center gap-2 py-1 cursor-pointer',
+      role: 'button',
+      tabindex: '0',
+      'aria-label': `Change entry date, currently ${formattedDate}`,
+      onclick: () => this.openDatePicker(dateInput),
+      onkeydown: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.openDatePicker(dateInput);
+        }
+      }
     }, [
-      createElement('div', { class: 'flex items-center gap-2 pointer-events-none' }, [
-        createElement('span', { class: 'material-symbols-outlined text-primary' }, 'calendar_month'),
-        createElement('span', { class: 'font-label-bold text-on-surface' }, formattedDate)
-      ]),
+      createElement('span', { class: 'material-symbols-outlined text-primary shrink-0' }, 'calendar_month'),
+      createElement('span', { class: 'font-label-bold text-on-surface truncate' }, formattedDate),
+      dateInput
+    ]);
+
+    const dateCard = createElement('div', {
+      class: 'relative flex items-center justify-between gap-3 bg-surface-container-low p-3 rounded-xl border border-outline-variant'
+    }, [
+      dateTrigger,
       createElement('div', { class: 'flex items-center gap-2' }, [
         createElement('button', {
+          type: 'button',
           class: 'bg-primary text-on-primary px-3 py-1.5 rounded-lg font-label-bold text-xs transition-transform active:scale-95 z-10',
           onclick: (e) => {
-            e.stopPropagation(); // Avoid triggering file input
+            e.stopPropagation();
             store.setSelectedDate(getTodayDateString());
           }
         }, 'Today'),
-        createElement('span', { class: 'material-symbols-outlined text-secondary pointer-events-none' }, 'arrow_drop_down')
-      ]),
-      dateInput
+        createElement('button', {
+          type: 'button',
+          class: 'material-symbols-outlined text-secondary p-1 rounded-lg hover:bg-surface-container-high active:scale-95 transition-all cursor-pointer',
+          'aria-label': 'Select entry date',
+          onclick: () => this.openDatePicker(dateInput)
+        }, 'arrow_drop_down')
+      ])
     ]);
 
     // 2. Section: Labour Attendance

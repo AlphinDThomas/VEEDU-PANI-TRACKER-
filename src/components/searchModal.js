@@ -14,7 +14,7 @@ export class SearchModal {
   show() {
     this.init();
     document.body.classList.add('overflow-hidden'); // Prevent background scrolling
-    
+
     // Transition in
     setTimeout(() => {
       this.el.classList.remove('opacity-0');
@@ -87,14 +87,14 @@ export class SearchModal {
   renderInitialState() {
     render(this.resultsContainer, createElement('div', { class: 'text-center py-8 text-secondary font-body-md' }, [
       createElement('span', { class: 'material-symbols-outlined text-4xl block mb-2' }, 'search_insights'),
-      'Type to search dates (YYYY-MM-DD), materials, activities, or notes.'
+      'Type to materials, activities.'
     ]));
   }
 
   handleInput(e) {
     const val = e.target.value;
     clearTimeout(this.debounceTimer);
-    
+
     this.debounceTimer = setTimeout(() => {
       this.handleSearch(val);
     }, 300);
@@ -134,7 +134,7 @@ export class SearchModal {
     // 1. Render Daily Record Matches
     if (results.records.length > 0) {
       items.push(createElement('h4', { class: 'text-xs font-label-bold uppercase tracking-wider text-secondary mt-2' }, `Daily Logs (${results.records.length})`));
-      
+
       const recordList = createElement('div', { class: 'flex flex-col gap-2' });
       results.records.forEach(r => {
         const item = createElement('div', {
@@ -158,7 +158,7 @@ export class SearchModal {
     // 2. Render Material Matches
     if (results.materials.length > 0) {
       items.push(createElement('h4', { class: 'text-xs font-label-bold uppercase tracking-wider text-secondary mt-4' }, `Materials Delivered (${results.materials.length})`));
-      
+
       const materialList = createElement('div', { class: 'flex flex-col gap-2' });
       results.materials.forEach(m => {
         const item = createElement('div', {
@@ -185,7 +185,7 @@ export class SearchModal {
     // 3. Render Activity Matches
     if (results.activities.length > 0) {
       items.push(createElement('h4', { class: 'text-xs font-label-bold uppercase tracking-wider text-secondary mt-4' }, `Activities (${results.activities.length})`));
-      
+
       const activityList = createElement('div', { class: 'flex flex-col gap-2' });
       results.activities.forEach(act => {
         const item = createElement('div', {
@@ -196,7 +196,7 @@ export class SearchModal {
           }
         }, [
           createElement('p', { class: 'text-sm text-on-surface font-body-md' }, act.description),
-          createElement('div', { class: 'flex flex-wrap gap-1 mt-2' }, 
+          createElement('div', { class: 'flex flex-wrap gap-1 mt-2' },
             act.tags.map(tag => createElement('span', { class: 'text-[10px] bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded-full font-semibold' }, tag))
           ),
           createElement('div', { class: 'text-[11px] text-secondary mt-2 flex justify-between' }, [
