@@ -342,21 +342,7 @@ export class DailyEntryScreen {
       tagsContainer
     ]);
 
-    // 6. Section: Site Notes
-    const notesSection = createElement('section', {
-      class: 'bg-surface-container-lowest p-5 rounded-xl border border-outline-variant shadow-xs space-y-stack-sm'
-    }, [
-      createElement('h2', { class: 'font-label-bold text-xs uppercase tracking-wider text-secondary' }, 'General Site Notes'),
-      createElement('textarea', {
-        rows: '2',
-        class: 'w-full bg-surface border border-secondary p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none resize-none text-sm',
-        placeholder: 'Any general details, instructions, weather issues, contractor visits...',
-        value: this.siteNotes,
-        oninput: (e) => { this.siteNotes = e.target.value; }
-      })
-    ]);
-
-    // 7. Preview Summary Card
+    // 6. Preview Summary Card
     this.previewLabourCount = createElement('p', { class: 'font-bold' }, `${this.labourCount} Total`);
     this.previewExpenseCount = createElement('p', { class: 'font-bold' }, formatRupees(teaTotal));
 
@@ -386,7 +372,7 @@ export class DailyEntryScreen {
       ])
     ]);
 
-    // 8. Action Buttons
+    // 7. Action Buttons
     const saveButton = createElement('button', {
       type: 'button',
       class: 'w-full bg-primary-container text-on-primary-container h-touch-target-min rounded-xl font-button-text text-button-text shadow-md active:scale-95 transition-transform flex items-center justify-center gap-2 cursor-pointer',
@@ -414,7 +400,6 @@ export class DailyEntryScreen {
     this.el.appendChild(teaSection);
     this.el.appendChild(materialsSection);
     this.el.appendChild(activitiesSection);
-    this.el.appendChild(notesSection);
     this.el.appendChild(previewCard);
     this.el.appendChild(saveButton);
     if (deleteButton) {
