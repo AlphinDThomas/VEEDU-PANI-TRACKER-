@@ -322,17 +322,8 @@ export class CalendarScreen {
       'Edit Entry'
     ]);
 
-    const duplicateBtn = createElement('button', {
-      class: 'flex items-center justify-center gap-2 bg-surface-container-lowest border border-secondary text-on-surface py-3.5 px-6 rounded-xl font-button-text text-sm hover:bg-surface-container active:scale-95 transition-all cursor-pointer',
-      onclick: () => this.handleDuplicate(record, materials, activities)
-    }, [
-      createElement('span', { class: 'material-symbols-outlined text-sm' }, 'content_copy'),
-      'Duplicate'
-    ]);
-
-    const actionsContainer = createElement('div', { class: 'grid grid-cols-2 gap-4' }, [
-      editBtn,
-      duplicateBtn
+    const actionsContainer = createElement('div', { class: 'grid gap-4' }, [
+      editBtn
     ]);
 
     this.detailsCardContainer.appendChild(summaryCard);
@@ -341,26 +332,5 @@ export class CalendarScreen {
     this.detailsCardContainer.appendChild(actionsContainer);
   }
 
-  handleDuplicate(record, materials, activities) {
-    // Save to window variable for temporary transfer
-    window.duplicateSourceRecord = {
-      record,
-      materials: materials.map(m => ({
-        materialName: m.materialName,
-        quantity: m.quantity,
-        unit: m.unit
-      })),
-      activity: activities.length > 0 ? {
-        description: activities[0].description,
-        tags: activities[0].tags
-      } : null
-    };
-
-    const todayStr = getTodayDateString();
-    store.setSelectedDate(todayStr);
-    
-    showToast('Record copied. Prefilling today\'s log.', 'info');
-    navigateTo('daily-entry');
-  }
 }
 export default CalendarScreen;
